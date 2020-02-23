@@ -1,7 +1,7 @@
 <!--
 
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-// Olive 2020-02-20 18:30
+// Olive 2020-02-23 21:30
 // OPTIONS : Voir le début de la section script
 
 // de préférence renseignez  les options de la commande min max et unite 
@@ -46,8 +46,13 @@ Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …,
 
 <div class="JaugeHorizontal-#id# cmd tooltips cmd-widget #history# widget-JaugeHorizontal" title="" data-type="info" data-subtype="numeric"  data-template="JaugeHorizontal"  data-cmd_id="#id#" >
   
+<div id="JaugeHorizontal#id#"></div>
+  
 
-  	<div id="JaugeHorizontal#id#" style="width: 250px ; height: 250px ;"></div>
+<div class="cmdStats #hide_history#" style="position: relative; top:-45px ;">
+<span title='Min' class='tooltips'>#minHistoryValue#</span>|<span title='Moyenne' class='tooltips'>#averageHistoryValue#</span>|<span title='Max' class='tooltips'>#maxHistoryValue#</span> <i class="#tendance#"></i>
+</div>
+  
 
 <script>
 
@@ -99,7 +104,9 @@ CTXT3#id# = CTXT3#id# + " !important";
 
 $('#JaugeHorizontal#id#').css('width',size#id#);
 $('#JaugeHorizontal#id#').css('height',size#id#);
- 
+$('#JaugeHorizontal#id#').css('position','relative');
+$('#JaugeHorizontal#id#').css('top','-15px');               
+
                               
 /*                      
  // Sélection du mode clair ou sombre
@@ -136,7 +143,7 @@ $('#JaugeHorizontal#id#').css('height',size#id#);
     },
 
     title: {
-        text: 'test',
+        text: '',
         verticalAlign:  'bottom'
     },				
     credits: {
