@@ -1,7 +1,7 @@
 <!--
 
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-// Olive 2020-02-23 21:30
+// Olive 2020-02-24 10:00
 // OPTIONS : Voir le début de la section script
 
 // de préférence renseignez  les options de la commande min max et unite 
@@ -18,6 +18,7 @@ Raiguille	// longueur arriere de aiguille (défaut 0)
 CTXT1	// Couleur du nom de la commande (défaut green)
 CTXT2	// Couleur de la valeur et de l’unité (défaut red)
 CTXT3	// Couleur des valeurs et (défaut white)
+RTXT  //orientation des valeurs des textes (défaut 'auto' 0 horizontal a 360  ...)
 fsize   // taille des caractères (défaut 12px)
 centre	// Couleur de l’axe de l’aiguille (défaut blanc)
 Tcentre	// Taille de l’axe de l’aiguille (défaut 5)
@@ -68,6 +69,7 @@ var Raiguille#id# = ('#Raiguille#' !='#'+'Raiguille#') ? "#Raiguille#":"0"; //  
 var CTXT1#id#   = ('#CTXT1#'   !='#'+'CTXT1#') ?   "#CTXT1#"  :"green";  // couleur texte 1
 var CTXT2#id#   = ('#CTXT2#'   !='#'+'CTXT2#') ?   "#CTXT2#"  :"red";  // couleur texte 2
 var CTXT3#id#   = ('#CTXT3#'   !='#'+'CTXT3#') ?   "#CTXT3#"  :"white";  // couleur texte 3
+var RTXT#id#    = ('#RTXT#'   !='#'+'RTXT#') ?   "#RTXT#"  :'auto';  // rotation texte valeurs
 
 var fsize#id#   = ('#fsize#'   !='#'+'fsize#') ?   "#fsize#"  :"12px"; // taille des caracteres
   
@@ -100,6 +102,9 @@ V2#id#=parseFloat(V2#id#);
 V3#id#=parseFloat(V3#id#);
 V4#id#=parseFloat(V4#id#);
 VX#id#=parseFloat(VX#id#);
+if(RTXT#id# != 'auto'){
+RTXT#id#=parseFloat(RTXT#id#);
+   }
 CTXT3#id# = CTXT3#id# + " !important";
 
 $('#JaugeHorizontal#id#').css('width',size#id#);
@@ -219,8 +224,8 @@ $('#JaugeHorizontal#id#').css('top','-15px');
         tickColor: '#F00',
         labels: {
             step: step#id#,
-            rotation: 'auto',
-
+            rotation: RTXT#id#,
+            padding: 1 ,
             style: {
                     //color:'CTXT3#id#!important',
               		color: CTXT3#id# ,
