@@ -129,6 +129,10 @@ $('#JaugeHorizontal#id#').css('height',size#id#);
 $('#JaugeHorizontal#id#').css('position','relative');
 $('#JaugeHorizontal#id#').css('top','-15px');               
 
+  // masquage des historiques sur le cadran si toutes nulles
+if ( VminHist#id# == 0 && VmoyHist#id# == 0 && VmaxHist#id# == 0 ) {
+  Cmin#id# = Cmoy#id# = Cmax#id# = '#00000000';
+}
                               
  // Sélection du mode clair ou sombre
 /*                      
