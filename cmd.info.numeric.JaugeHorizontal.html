@@ -1,7 +1,7 @@
 <!--
 
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-// Olive 2020-02-24 10:00
+// Olive 2020-02-27 08:30
 // OPTIONS : Voir le début de la section script
 
 // de préférence renseignez  les options de la commande min max et unite 
@@ -32,12 +32,18 @@ C3	// Couleur 3ème échelle des valeurs (défaut rouge)
 C4	// Couleur 4ème échelle des valeurs (défaut rouge)
 C5	// Couleur 5ème echelle des valeurs (défaut rouge)
 
+Cmin // couleur valeur mini    historique (défaut Bleu) rgba(0,0,0,0) pour cacher
+Cmoy // couleur valeur moyenne historique (défaut vert)
+Cmax // couleur valeur maxi    historique (défaut Rouge)
+
 V0	// Valeur de separation entre la partie DEBUT
 V1	// Valeur de separation entre la partie 1 et 2
 V2	// Valeur de separation entre la partie 2 et 3
 V3	// Valeur de separation entre la partie 3 et 4
 V4	// Valeur de separation entre la partie 4 et 5
 VX	// Valeur de separation entre la partie FIN
+
+dur // affichage de la durée depuis la dernière valeur
 -------------------------------------------------------------------------
 
 
@@ -54,7 +60,10 @@ Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …,
 <span title='Min' class='tooltips'>#minHistoryValue#</span>|<span title='Moyenne' class='tooltips'>#averageHistoryValue#</span>|<span title='Max' class='tooltips'>#maxHistoryValue#</span> <i class="#tendance#"></i>
 </div>
   
-
+<div class="value" style="position: relative; top:-45px ;">
+  <span class="timeCmd#uid# timeCmd label label-default value"></span>
+</div>
+  
 <script>
 
 var nom#id# = ('#nom#' !='#'+'nom#') ? "#nom#":"#name#";  // remplace le nom de la commande par celui de votre choix
@@ -87,6 +96,10 @@ var C3#id# = ('#C3#' !='#'+'C3#') ? "#C3#":"#800"; //ROUGE COULEUR 3IEME PARTIE
 var C4#id# = ('#C4#' !='#'+'C4#') ? "#C4#":"#800"; //ROUGE COULEUR 4IEME PARTIE
 var C5#id# = ('#C5#' !='#'+'C5#') ? "#C5#":"#800"; //ROUGE COULEUR 5IEME PARTIE
 
+var Cmin#id# = ('#Cmin#' !='#'+'Cmin#') ? "#Cmin#":"#00F"; //BLANC STAT MIN
+var Cmoy#id# = ('#Cmoy#' !='#'+'Cmoy#') ? "#Cmoy#":"#0F0"; //BLANC STAT MOYENNE
+var Cmax#id# = ('#Cmax#' !='#'+'Cmax#') ? "#Cmax#":"#F00"; //BLANC STAT MINI
+
 var V0#id# = ('#V0#' !='#'+'V0#') ? "#V0#":"#minValue#"; // valeur de separation entre la partie 0 et 1
 var V1#id# = ('#V1#' !='#'+'V1#') ? "#V1#":"#minValue#"; // valeur de separation entre la partie 1 et 2
 var V2#id# = ('#V2#' !='#'+'V2#') ? "#V2#":"#minValue#"; // valeur de separation entre la partie 2 et 3
@@ -94,6 +107,8 @@ var V2#id# = ('#V2#' !='#'+'V2#') ? "#V2#":"#minValue#"; // valeur de separation
 var V3#id# = ('#V3#' !='#'+'V3#') ? "#V3#":"#maxValue#"; // valeur de separation entre la partie 3 et 4
 var V4#id# = ('#V4#' !='#'+'V4#') ? "#V4#":"#maxValue#"; // valeur de separation entre la partie 4 et 5
 var VX#id# = ('#VX#' !='#'+'VX#') ? "#VX#":"#maxValue#"; // valeur de separation entre la partie 5 et 6
+
+var dur#id# = ('#dur#' !='#'+'dur#') ? "#dur#":"oui";
 
 
 V0#id#=parseFloat(V0#id#);
@@ -276,17 +291,72 @@ $('#JaugeHorizontal#id#').css('top','-15px');
 
     series: [{
         name: 'Valeur',
-        data: [#state#],
+        data: [
+            {
+            id: 'valeur',
+            y: 0}
+          
+               
+           ,{
+            id: 'min',
+            y: 50,            
+             dial: {
+                radius: '99%',
+                baseWidth: 1,
+                topWidth: 8,
+                baseLength: '90%',
+                rearLength: '-90%',
+                backgroundColor: Cmin#id#,
+                borderColor: Cmin#id#
+            }
+           }   
+            
+          ,{
+            id: 'moy',
+            y: 80,            
+             dial: {
+                radius: '99%',
+                baseWidth: 1,
+                topWidth: 8,
+                baseLength: '90%',
+                rearLength: '-90%',
+                backgroundColor: Cmoy#id#,
+                borderColor: Cmoy#id#
+            }
+           } 
+          
+          ,{
+            id: 'max',
+            y: 100,            
+             dial: {
+                radius: '99%',
+                baseWidth: 1,
+                topWidth: 8,
+                baseLength: '90%',
+                rearLength: '-90%',
+                backgroundColor: Cmax#id#,
+                borderColor: Cmax#id#
+            }
+           } 
+              
+              
+              
+              ],
         tooltip: {
             valueSuffix: ' #unite#'
-        }}
-    
-
+               }
+             }
             
+             
+             
+             
+             
+             
             
             ]
 
-
+  
+  
                                               
 }     )                                       
  
@@ -294,7 +364,8 @@ $('#JaugeHorizontal#id#').css('top','-15px');
 
 jeedom.cmd.update['#id#'] = function(_options){
   var valeur = parseFloat(_options.display_value);
-  var valeur2 = _options.collectDate;    
+  var valeur2 = _options.collectDate;
+  //var val3 = _optons.minHistoryValue;
 
 
 $('.cmd[data-cmd_id=#id#]').attr('title','Date de valeur : '+_options.valueDate+'<br/>Date de collecte : '+_options.collectDate)
@@ -327,8 +398,14 @@ $('.cmd[data-cmd_id=#id#]').attr('title','Date de valeur : '+_options.valueDate+
   
   
   chart#id#.series[0].data[0].update(valeur);
-  
-  
+  chart#id#.series[0].data[1].update(#minHistoryValue#); //min
+  chart#id#.series[0].data[2].update(#averageHistoryValue#); //moy
+  chart#id#.series[0].data[3].update(#maxHistoryValue#);     //max             
+ 
+if( dur#id# == "oui"){           
+ jeedom.cmd.displayDuration(_options.valueDate,  
+    $('.cmd[data-cmd_id=#id#] .timeCmd#uid#')); 
+  } 
 // A FAIRE
  // Sélection du mode clair ou sombre
 				if ($('body')[0].hasAttribute('data-theme')) {
