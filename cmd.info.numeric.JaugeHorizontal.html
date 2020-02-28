@@ -129,6 +129,19 @@ $('#JaugeHorizontal#id#').css('height',size#id#);
 $('#JaugeHorizontal#id#').css('position','relative');
 $('#JaugeHorizontal#id#').css('top','-15px');               
 
+  // masquage des historiques sur le cadran si toutes nulles
+if ( VminHist#id# == 0 && VmoyHist#id# == 0 && VmaxHist#id# == 0 ) {
+  Cmin#id# = Cmoy#id# = Cmax#id# = '#00000000';
+}
+else { // limitation des historiques sur le cadran à 2% de la plage
+  var plage = (VX#id# - V0#id#) *.02;
+  if (  VminHist#id# < V0#id# )  VminHist#id# = V0#id# - plage;
+  else if (  VminHist#id# > VX#id# ) VminHist#id# = VX#id# + plage;
+  if (  VmoyHist#id# < V0#id# )  VmoyHist#id# = V0#id# - plage;
+  else if (  VmoyHist#id# > VX#id# ) VmoyHist#id# = VX#id# + plage;
+  if (  VmaxHist#id# < V0#id# )  VmaxHist#id# = V0#id# - plage;
+  else if (  VmaxHist#id# > VX#id# ) VmaxHist#id# = VX#id# + plage;
+}
                               
  // Sélection du mode clair ou sombre
 /*                      
