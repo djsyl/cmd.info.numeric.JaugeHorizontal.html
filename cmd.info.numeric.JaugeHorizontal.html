@@ -2,10 +2,10 @@
 
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
 // Olive 2020-02-27 08:30
-// JPTY  2020-02-28
+// JPTY  2020-02-29
 // OPTIONS : Voir le début de la section script
 
-// de préférence renseignez  les options de la commande min max et unite 
+// de préférence renseignez  les options de la commande min max et unite
 
 ----- Paramètres optionnels widget
 size //  taille du cadran (déaut 250px)
@@ -53,23 +53,23 @@ Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …,
 -->
 
 <div class="JaugeHorizontal-#id# cmd tooltips cmd-widget #history# widget-JaugeHorizontal" title="" data-type="info" data-subtype="numeric"  data-template="JaugeHorizontal"  data-cmd_id="#id#" >
-  
+
 <div id="JaugeHorizontal#id#"></div>
-  
+
 
 <div class="cmdStats #hide_history#" style="position: relative; top:-45px ;">
 <span title='Min' class='tooltips'>#minHistoryValue#</span>|<span title='Moyenne' class='tooltips'>#averageHistoryValue#</span>|<span title='Max' class='tooltips'>#maxHistoryValue#</span> <i class="#tendance#"></i>
 </div>
-  
+
 <div class="value" style="position: relative; top:-45px ;">
   <span class="timeCmd#uid# timeCmd label label-default value"></span>
 </div>
-  
+
 <script>
 
 var nom#id# = ('#nom#' !='#'+'nom#') ? "#nom#":"#name#";  // remplace le nom de la commande par celui de votre choix
 var size#id# = ('#size#' !='#'+'size#') ? "#size#":"250px";  // taille du cadran
-var back#id# = ('#back#' !='#'+'back#') ? "#back#":"transparent";  // couleur fond exterieur au cadran  
+var back#id# = ('#back#' !='#'+'back#') ? "#back#":"transparent";  // couleur fond exterieur au cadran
 var fond#id# = ('#fond#' !='#'+'fond#') ? "#fond#":"#000";  // couleur fond du cadran
 var aiguille#id# = ('#aiguille#' !='#'+'aiguille#') ? "#aiguille#":"#F00";  // couleur aiguille défaut rouge
 var Laiguille#id# = ('#Laiguille#' !='#'+'Laiguille#') ? "#Laiguille#":"70"; //  Longueur de aiguille
@@ -82,11 +82,11 @@ var CTXT3#id#   = ('#CTXT3#'   !='#'+'CTXT3#') ?   "#CTXT3#"  :"white";  // coul
 var RTXT#id#    = ('#RTXT#'   !='#'+'RTXT#') ?   "#RTXT#"  :'auto';  // rotation texte valeurs
 
 var fsize#id#   = ('#fsize#'   !='#'+'fsize#') ?   "#fsize#"  :"12px"; // taille des caracteres
-  
+
 var centre#id#   = ('#centre#'   !='#'+'centre#') ?   "#centre#"  :"#FFF";  // blanc
 var Tcentre#id#   = ('#Tcentre#'   !='#'+'Tcentre#') ?   "#Tcentre#"  :"5";  // taille du centre
 
-var step#id#   = ('#step#'   !='#'+'step#') ?   "#step#"  :"2";  // espacement des valeurs 
+var step#id#   = ('#step#'   !='#'+'step#') ?   "#step#"  :"2";  // espacement des valeurs
 
 var start#id#  = ('#start#'  !='#'+'start#') ?  "#start#" :"-150"; // début compteur
 var stop#id#   = ('#stop#'   !='#'+'stop#') ?   "#stop#"  :"150";      //fin compteur
@@ -114,7 +114,12 @@ var dur#id# = ('#dur#' !='#'+'dur#') ? "#dur#":"oui";
 var VminHist#id# = ('#minHistoryValue#' !='#'+'minHistoryValue#') ? "#minHistoryValue#":"0";
 var VmoyHist#id# = ('#averageHistoryValue#' !='#'+'averageHistoryValue#') ? "#averageHistoryValue#":"0";
 var VmaxHist#id# = ('#maxHistoryValue#' !='#'+'maxHistoryValue#') ? "#maxHistoryValue#":"0";
-
+VminHist#id#=parseFloat(VminHist#id#);
+VmoyHist#id#=parseFloat(VmoyHist#id#);
+VmaxHist#id#=parseFloat(VmaxHist#id#);
+var VminRealHist#id#=VminHist#id#;
+var VmoyRealHist#id#=VmoyHist#id#;
+var VmaxRealHist#id#=VmaxHist#id#;
 
 V0#id#=parseFloat(V0#id#);
 V1#id#=parseFloat(V1#id#);
@@ -128,24 +133,41 @@ CTXT3#id# = CTXT3#id# + " !important";
 $('#JaugeHorizontal#id#').css('width',size#id#);
 $('#JaugeHorizontal#id#').css('height',size#id#);
 $('#JaugeHorizontal#id#').css('position','relative');
-$('#JaugeHorizontal#id#').css('top','-15px');               
+$('#JaugeHorizontal#id#').css('top','-15px');
 
-  // masquage des historiques sur le cadran si toutes nulles
 if ( VminHist#id# == 0 && VmoyHist#id# == 0 && VmaxHist#id# == 0 ) {
   Cmin#id# = Cmoy#id# = Cmax#id# = '#00000000';
 }
-else { // limitation des historiques sur le cadran à 2% de la plage
+else { // limitation des taquets d'historique à 2% de la plage
   var plage = (VX#id# - V0#id#) *.02;
-  if (  VminHist#id# < V0#id# )  VminHist#id# = V0#id# - plage;
-  else if (  VminHist#id# > VX#id# ) VminHist#id# = VX#id# + plage;
-  if (  VmoyHist#id# < V0#id# )  VmoyHist#id# = V0#id# - plage;
-  else if (  VmoyHist#id# > VX#id# ) VmoyHist#id# = VX#id# + plage;
-  if (  VmaxHist#id# < V0#id# )  VmaxHist#id# = V0#id# - plage;
-  else if (  VmaxHist#id# > VX#id# ) VmaxHist#id# = VX#id# + plage;
+  if ( VminHist#id# < V0#id# ) {
+    VminRealHist#id# = VminHist#id#;
+    VminHist#id# = V0#id# - plage;
+  }
+  else if ( VminHist#id# > VX#id# ) {
+    VminRealHist#id# = VminHist#id#;
+    VminHist#id# = VX#id# + plage;
+  }
+  if ( VmoyHist#id# < V0#id# ) {
+    VmoyRealHist#id# = VmoyHist#id#;
+    VmoyHist#id# = V0#id# - plage;
+  }
+  else if (  VmoyHist#id# > VX#id# ) {
+    VmoyRealHist#id# = VmoyHist#id#;
+    VmoyHist#id# = VX#id# + plage;
+  }
+  if (  VmaxHist#id# < V0#id# ) {
+    VmaxRealHist#id# = VmaxHist#id#;
+    VmaxHist#id# = V0#id# - plage;
+  }
+  else if (  VmaxHist#id# > VX#id# ) {
+    VmaxRealHist#id# = VmaxHist#id#;
+    VmaxHist#id# = VX#id# + plage;
+  }
 }
-                              
+
  // Sélection du mode clair ou sombre
-/*                      
+/*
   if ($('body')[0].hasAttribute('data-theme')) {
     if ($('body').attr('data-theme').endsWith('Light')) {
       srcMode = "light";
@@ -155,8 +177,8 @@ else { // limitation des historiques sur le cadran à 2% de la plage
       fond#id# = 'yellow';
     }
   }
-*/                              
-  
+*/
+
   var chart#id#;
   chart#id# = new Highcharts.Chart({
     chart: {
@@ -169,7 +191,7 @@ else { // limitation des historiques sur le cadran à 2% de la plage
       plotShadow: false
     },
     title: { text: '', verticalAlign:  'bottom'
-    },        
+    },
     credits: { enabled: false },
     pane: {
       startAngle: start#id#,
@@ -179,12 +201,12 @@ else { // limitation des historiques sur le cadran à 2% de la plage
           borderWidth: 0,
           outerRadius: '100%',
           innerRadius: '0%'
-      }] 
+      }]
     },
     exporting : { enabled: false },
     plotOptions: {
       series: { dataLabels: { enabled: false }
-      },          
+      },
       gauge: {
         dial: {
           radius:Laiguille#id#,
@@ -201,7 +223,7 @@ else { // limitation des historiques sur le cadran à 2% de la plage
           borderColor:centre#id#,
           backgroundColor: centre#id#
         }
-      }               
+      }
     },
     yAxis: {
       min: V0#id#,
@@ -211,7 +233,7 @@ else { // limitation des historiques sur le cadran à 2% de la plage
       minorTickLength: 10,
       minorTickPosition: 'inside',
       minorTickColor: 'red !important', // Ne fonctionne pas couleur du core
-      tickPixelInterval: 50, 
+      tickPixelInterval: 50,
       tickWidth: 2,
       tickPosition: 'inside',
       tickLength: 10,
@@ -241,54 +263,85 @@ else { // limitation des historiques sur le cadran à 2% de la plage
         { from: V4#id#, to: VX#id#, color: C5#id# }  // red couleur 5
       ]
     },
-    series: [{
-      name: 'Valeur',
-      data: [
-        { id: 'valeur',
-          y: 0
-        },
-        { id: 'min',
-          y: VminHist#id#,            
-          dial: {
-            radius: '99%',
-            baseWidth: 1,
-            topWidth: 8,
-            baseLength: '90%',
-            rearLength: '-90%',
-            backgroundColor: Cmin#id#,
-            borderColor: Cmin#id#
+    series: [
+      { name: 'Valeur',
+        data: [
+          { id: 'valeur',
+            y: 0
           }
-        },   
-        { id: 'moy',
-          y: VmoyHist#id#,            
-          dial: {
-            radius: '99%',
-            baseWidth: 1,
-            topWidth: 8,
-            baseLength: '90%',
-            rearLength: '-90%',
-            backgroundColor: Cmoy#id#,
-            borderColor: Cmoy#id#
-          }
-        },
-        { id: 'max',
-          y: VmaxHist#id#,            
-          dial: {
-            radius: '99%',
-            baseWidth: 1,
-            topWidth: 8,
-            baseLength: '90%',
-            rearLength: '-90%',
-            backgroundColor: Cmax#id#,
-            borderColor: Cmax#id#
-          }
+        ],
+        tooltip: { valueSuffix: ' #unite#'
         }
-      ],
-      tooltip: { valueSuffix: ' #unite#'
+      },
+      { name: 'Minimum',
+        data: [
+          { id: 'min',
+            y: VminHist#id#,
+            dial: {
+              radius: '99%',
+              baseWidth: 1,
+              topWidth: 8,
+              baseLength: '90%',
+              rearLength: '-90%',
+              backgroundColor: Cmin#id#,
+              borderColor: Cmin#id#
+            }
+          }
+        ],
+        tooltip: { valueSuffix: VminRealHist#id#
+        }
+      },
+      { name: 'Moyenne',
+        data: [
+          { id: 'moy',
+            y: VmoyHist#id#,
+            dial: {
+              radius: '99%',
+              baseWidth: 1,
+              topWidth: 8,
+              baseLength: '90%',
+              rearLength: '-90%',
+              backgroundColor: Cmoy#id#,
+              borderColor: Cmoy#id#
+            }
+          }
+        ],
+        tooltip: { valueSuffix: VmoyRealHist#id#
+        }
+      },
+      { name: 'Maximum',
+        data: [
+          { id: 'max',
+            y: VmaxHist#id#,
+            dial: {
+              radius: '99%',
+              baseWidth: 1,
+              topWidth: 8,
+              baseLength: '90%',
+              rearLength: '-90%',
+              backgroundColor: Cmax#id#,
+              borderColor: Cmax#id#
+            }
+          }
+        ],
+        tooltip: { valueSuffix: VmaxRealHist#id#
+        }
       }
-    }]
-  })                                       
- 
+    ],
+    tooltip: { followPointer: true,
+      formatter: function (tooltip) {
+        if( this.series.name == 'Minimum')
+          return ('Minimum ' + VminRealHist#id#);
+        else if( this.series.name == 'Moyenne')
+          return ('Moyenne ' + VmoyRealHist#id#);
+        else if( this.series.name == 'Maximum')
+          return ('Maximum ' + VmaxRealHist#id#);
+        else
+          return tooltip.defaultFormatter.call(this, tooltip);
+      }
+    }
+  })
+
 
 
   jeedom.cmd.update['#id#'] = function(_options){
@@ -298,21 +351,21 @@ else { // limitation des historiques sur le cadran à 2% de la plage
     chart#id#.yAxis[0].setTitle(
       { text: nom#id# , style: { color: CTXT1#id#, fontWeight: 'bold', fontSize: fsize#id# } }
     );
-     
+
     chart#id#.setTitle(
       { text: valeur + ' #unite#', style: { color: CTXT2#id#, fontSize: fsize#id# }, y:-60}
     );
-  
+
       // limitation aiguille contribution JPTY
     var plage = (VX#id# - V0#id#) *.02;
     if ( valeur < V0#id# ) valeur = V0#id# - plage;
     else if ( valeur > VX#id# ) valeur = VX#id# + plage;
-       
+
     chart#id#.series[0].data[0].update(valeur);
- 
-    if( dur#id# == "oui"){           
-      jeedom.cmd.displayDuration(_options.valueDate, $('.cmd[data-cmd_id=#id#] .timeCmd#uid#')); 
-    } 
+
+    if( dur#id# == "oui"){
+      jeedom.cmd.displayDuration(_options.valueDate, $('.cmd[data-cmd_id=#id#] .timeCmd#uid#'));
+    }
 // A FAIRE
       // Sélection du mode clair ou sombre
     if ($('body')[0].hasAttribute('data-theme')) {
@@ -321,7 +374,7 @@ else { // limitation des historiques sur le cadran à 2% de la plage
       } else {
         srcMode = "dark";
       }
-    } 
+    }
   //chart#id#.chart({plotBackgroundColor: 'red !important'});
 //  chart#id#.chart.setOptions({
  //   plotBackgroundColor: 'red'
