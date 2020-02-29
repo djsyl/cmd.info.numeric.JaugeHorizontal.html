@@ -1,7 +1,7 @@
 <!--
 
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-// Olive 2020-02-27 08:30
+// Olive 2020-02-27 08:30 JPTY PR 2020-02-27 22:00
 // JPTY  2020-02-29
 // OPTIONS : Voir le début de la section script
 
@@ -329,6 +329,7 @@ else { // limitation des taquets d'historique à 2% de la plage
       }
     ],
     tooltip: { followPointer: true,
+      padding: 0,
       formatter: function (tooltip) {
         if( this.series.name == 'Minimum')
           return ('Minimum ' + VminRealHist#id#);
@@ -336,6 +337,8 @@ else { // limitation des taquets d'historique à 2% de la plage
           return ('Moyenne ' + VmoyRealHist#id#);
         else if( this.series.name == 'Maximum')
           return ('Maximum ' + VmaxRealHist#id#);
+        else if( this.series.name == 'Valeur')
+          return ''; // this.series.name; // Pour afficher Valeur
         else
           return tooltip.defaultFormatter.call(this, tooltip);
       }
