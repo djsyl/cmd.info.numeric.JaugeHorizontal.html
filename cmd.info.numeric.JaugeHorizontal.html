@@ -270,8 +270,7 @@ else { // limitation des taquets d'historique à 2% de la plage
             y: 0
           }
         ],
-        tooltip: { valueSuffix: ' #unite#'
-        }
+        enableMouseTracking: false
       },
       { name: 'Minimum',
         data: [
@@ -329,7 +328,7 @@ else { // limitation des taquets d'historique à 2% de la plage
       }
     ],
     tooltip: { followPointer: true,
-      padding: 0,
+      padding: 4,
       formatter: function (tooltip) {
         if( this.series.name == 'Minimum')
           return ('Minimum ' + VminRealHist#id#);
@@ -337,8 +336,6 @@ else { // limitation des taquets d'historique à 2% de la plage
           return ('Moyenne ' + VmoyRealHist#id#);
         else if( this.series.name == 'Maximum')
           return ('Maximum ' + VmaxRealHist#id#);
-        else if( this.series.name == 'Valeur')
-          return ''; // this.series.name; // Pour afficher Valeur
         else
           return tooltip.defaultFormatter.call(this, tooltip);
       }
