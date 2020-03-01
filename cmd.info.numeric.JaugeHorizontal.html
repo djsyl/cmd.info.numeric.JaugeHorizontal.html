@@ -1,12 +1,10 @@
 <!--
-
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-// Olive 2020-02-27 08:30 JPTY PR 2020-02-27 22:00
+// Olive 2020-03-27 18:20 ajout couleur ticks et minor
+JPTY PR 2020-02-27 22:00
 // JPTY  2020-02-29
 // OPTIONS : Voir le début de la section script
-
 // de préférence renseignez  les options de la commande min max et unite
-
 ----- Paramètres optionnels widget
 size //  taille du cadran (déaut 250px)
 nom  // remplace le nom de la commande par celui de votre choix
@@ -26,30 +24,26 @@ Tcentre  // Taille de l’axe de l’aiguille (défaut 5)
 step  // Espacement entre deux valeurs (défaut 2)
 start  // début cadran (défaut -150 degrés par rapport au nord)
 stop  // fin cadran   (défaut 150 degrés par rapport au nord)
-
 C1  // Couleur 1ère échelle des valeurs (défaut vert)
 C2  // Couleur 2ème échelle des valeurs (défaut jaune)
 C3  // Couleur 3ème échelle des valeurs (défaut rouge)
 C4  // Couleur 4ème échelle des valeurs (défaut rouge)
 C5  // Couleur 5ème echelle des valeurs (défaut rouge)
-
 Cmin // couleur valeur mini    historique (défaut Bleu) rgba(0,0,0,0) pour cacher
 Cmoy // couleur valeur moyenne historique (défaut vert)
 Cmax // couleur valeur maxi    historique (défaut Rouge)
-
 V0  // Valeur de separation entre la partie DEBUT
 V1  // Valeur de separation entre la partie 1 et 2
 V2  // Valeur de separation entre la partie 2 et 3
 V3  // Valeur de separation entre la partie 3 et 4
 V4  // Valeur de separation entre la partie 4 et 5
 VX  // Valeur de separation entre la partie FIN
-
 dur  // affichage de la durée depuis la dernière valeur
+minorTickcolor // couleur des ticks mineur
+tickColor      // couleur des ticks
+
 -------------------------------------------------------------------------
-
-
 Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …, #000000, …, rgb(255,0,0), …, rgba(255,0,0,0.5) pour des effets de transparence avec le dernier paramètre entre 0 et 1).
-
 -->
 
 <div class="JaugeHorizontal-#id# cmd tooltips cmd-widget #history# widget-JaugeHorizontal" title="" data-type="info" data-subtype="numeric"  data-template="JaugeHorizontal"  data-cmd_id="#id#" >
@@ -65,6 +59,14 @@ Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …,
   <span class="timeCmd#uid# timeCmd label label-default value"></span>
 </div>
 
+  
+<style>
+#JaugeHorizontal#id# .highcharts-minor-tick { stroke: #minorTickcolor#}
+#JaugeHorizontal#id# .highcharts-tick { stroke: #tickColor#}
+</style>  
+  
+  
+  
 <script>
 
 var nom#id# = ('#nom#' !='#'+'nom#') ? "#nom#":"#name#";  // remplace le nom de la commande par celui de votre choix
@@ -80,6 +82,7 @@ var CTXT1#id#   = ('#CTXT1#'   !='#'+'CTXT1#') ?   "#CTXT1#"  :"green";  // coul
 var CTXT2#id#   = ('#CTXT2#'   !='#'+'CTXT2#') ?   "#CTXT2#"  :"red";  // couleur texte 2
 var CTXT3#id#   = ('#CTXT3#'   !='#'+'CTXT3#') ?   "#CTXT3#"  :"white";  // couleur texte 3
 var RTXT#id#    = ('#RTXT#'   !='#'+'RTXT#') ?   "#RTXT#"  :'auto';  // rotation texte valeurs
+
 
 var fsize#id#   = ('#fsize#'   !='#'+'fsize#') ?   "#fsize#"  :"12px"; // taille des caracteres
 
@@ -232,12 +235,12 @@ else { // limitation des taquets d'historique à 2% de la plage
       minorTickWidth: 1,
       minorTickLength: 10,
       minorTickPosition: 'inside',
-      minorTickColor: 'red !important', // Ne fonctionne pas couleur du core
+      minorTickColor: '', // Ne fonctionne pas couleur du core
       tickPixelInterval: 50,
       tickWidth: 2,
       tickPosition: 'inside',
       tickLength: 10,
-      tickColor: '#F00', // Ne fonctionne pas couleur du core
+      tickColor: '', // Ne fonctionne pas couleur du core
       labels: {
         step: step#id#,
         rotation: RTXT#id#,
