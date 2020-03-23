@@ -1,6 +1,6 @@
 <!--
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-// Olive 2020-03-27 18:20 ajout couleur ticks et minor
+// Olive 2020-03-23 16:00 ajout image de fond
 JPTY PR 2020-02-27 22:00
 // JPTY  2020-02-29
 // OPTIONS : Voir le début de la section script
@@ -41,7 +41,7 @@ VX  // Valeur de separation entre la partie FIN
 dur  // affichage de la durée depuis la dernière valeur
 minorTickcolor // couleur des ticks mineur
 tickColor      // couleur des ticks
-
+image // image de fond (défaut pas d'image)
 -------------------------------------------------------------------------
 Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …, #000000, …, rgb(255,0,0), …, rgba(255,0,0,0.5) pour des effets de transparence avec le dernier paramètre entre 0 et 1).
 -->
@@ -117,6 +117,9 @@ var dur#id# = ('#dur#' !='#'+'dur#') ? "#dur#":"oui";
 var VminHist#id# = ('#minHistoryValue#' !='#'+'minHistoryValue#') ? "#minHistoryValue#":"0";
 var VmoyHist#id# = ('#averageHistoryValue#' !='#'+'averageHistoryValue#') ? "#averageHistoryValue#":"0";
 var VmaxHist#id# = ('#maxHistoryValue#' !='#'+'maxHistoryValue#') ? "#maxHistoryValue#":"0";
+
+var image#id# = ('#image#' !='#'+'image#') ? "#image#":"null";
+
 VminHist#id#=parseFloat(VminHist#id#);
 VmoyHist#id#=parseFloat(VmoyHist#id#);
 VmaxHist#id#=parseFloat(VmaxHist#id#);
@@ -182,13 +185,16 @@ else { // limitation des taquets d'historique à 2% de la plage
   }
 */
 
+// plotBackgroundImage: 'data/img/rm.png',
+
+
   var chart#id#;
   chart#id# = new Highcharts.Chart({
     chart: {
       renderTo: 'JaugeHorizontal#id#',
       type: 'gauge',
       plotBackgroundColor: back#id#,
-      plotBackgroundImage: null,
+      plotBackgroundImage: image#id#,
       plotBorderWidth:0,
       plotBorderColor: back#id#,
       plotShadow: false
