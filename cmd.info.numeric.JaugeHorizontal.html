@@ -1,6 +1,6 @@
 <!--
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-// Olive 2020-03-23 16:00 ajout image de fond
+// Olive 2020-04-07 11:45:00 correction petit bug
 JPTY PR 2020-02-27 22:00
 // JPTY  2020-02-29
 // OPTIONS : Voir le début de la section script
@@ -118,7 +118,7 @@ var VminHist#id# = ('#minHistoryValue#' !='#'+'minHistoryValue#') ? "#minHistory
 var VmoyHist#id# = ('#averageHistoryValue#' !='#'+'averageHistoryValue#') ? "#averageHistoryValue#":"0";
 var VmaxHist#id# = ('#maxHistoryValue#' !='#'+'maxHistoryValue#') ? "#maxHistoryValue#":"0";
 
-var image#id# = ('#image#' !='#'+'image#') ? "#image#":"null";
+var image#id# = ('#image#' !='#'+'image#') ? "#image#":null;
 
 VminHist#id#=parseFloat(VminHist#id#);
 VmoyHist#id#=parseFloat(VmoyHist#id#);
@@ -393,3 +393,4 @@ else { // limitation des taquets d'historique à 2% de la plage
 jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#'});
 </script>
 </div>
+
