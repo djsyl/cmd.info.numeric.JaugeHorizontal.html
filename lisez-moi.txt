@@ -1,0 +1,2 @@
+Sur jeedom version 4 utilisez le fichier : cmd.info.numeric.JaugeHorizontal.html
+Sur jeedom version 3 utilisez le fichier : cmd.info.numeric.JaugeHorizontalV3.html
