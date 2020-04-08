@@ -1,5 +1,6 @@
 <!--
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
+// JPTY 2020-04-08 version de code pour V3 revue par JPTY
 // Salvialf 2020-04-07 version de code pour jeedom V3
 // Olive 2020-03-23 16:00 ajout image de fond
 JPTY PR 2020-02-27 22:00
@@ -47,27 +48,25 @@ image // image de fond (défaut pas d'image)
 Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …, #000000, …, rgb(255,0,0), …, rgba(255,0,0,0.5) pour des effets de transparence avec le dernier paramètre entre 0 et 1).
 -->
 
-<div class="JaugeHorizontal-#id# cmd tooltips cmd-widget #history# widget-JaugeHorizontal" title="" data-type="info" data-subtype="numeric"  data-template="JaugeHorizontal"  data-cmd_id="#id#" >
 
-<div id="JaugeHorizontal#id#"></div>
-
-
-<div style="#displayHistory# font-size: 0.8em;" class="col-xs-12 center-block" class="cmdStats">
-  <span title='Min' class='tooltips'>#minHistoryValue#</span>|<span title='Moyenne' class='tooltips'>#averageHistoryValue#</span>|<span title='Max' class='tooltips'>#maxHistoryValue#</span> <i class="#tendance#"></i>
-</div>
-
-<div class="value" style="position: relative; top:-45px ;">
-  <span class="timeCmd#uid# timeCmd label label-default value"></span>
-</div>
-
+<div style="min-height : 60px;min-width : 20px;" class="cmd #history# container-fluid tooltips cmd-widget" data-type="info" data-subtype="numeric" data-cmd_id="#id#" data-cmd_uid="#uid#" data-version="#version#" data-eqLogic_id="#eqLogic_id#">
+	<center>
+		<div style="font-weight: bold;font-size : 12px;#hideCmdName#">#name_display#</div>
+		<span class='label label-info state' style="font-size: 1em;position:relative;top:2px"></span>
+          <div id="JaugeHorizontal#id#"></div>
+		<div style="#displayHistory# font-size: 0.8em;" class="col-xs-12 center-block">
+			<span title='Min' class='tooltips'>#minHistoryValue#</span>|<span title='Moyenne' class='tooltips'>#averageHistoryValue#</span>|<span title='Max' class='tooltips'>#maxHistoryValue#</span> <i class="#tendance#"></i>
+		</div>
+        <div class="value" style="position: relative; top:-45px ;">
+          <span class="timeCmd#uid# timeCmd label label-default value"></span>
+        </div>
+	</center>
   
 <style>
 #JaugeHorizontal#id# .highcharts-minor-tick { stroke: #minorTickcolor#}
 #JaugeHorizontal#id# .highcharts-tick { stroke: #tickColor#}
 </style>  
-  
-  
-  
+   
 <script>
 
 var nom#id# = ('#nom#' !='#'+'nom#') ? "#nom#":"#name#";  // remplace le nom de la commande par celui de votre choix
