@@ -1,6 +1,6 @@
 <!--
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-// Olive 2020-04-07 11:45:00 correction petit bug
+// Olive 2020-03-23 16:00 ajout image de fond
 JPTY PR 2020-02-27 22:00
 // JPTY  2020-02-29
 // OPTIONS : Voir le début de la section script
@@ -42,20 +42,35 @@ dur  // affichage de la durée depuis la dernière valeur
 minorTickcolor // couleur des ticks mineur
 tickColor      // couleur des ticks
 image // image de fond (défaut pas d'image)
+
+wpos  // position du widget (défaut -15px)
+npos  // position du nom (défaut 15)
+vpos  // position de la valeur (défaut -60)
+vposx // position horizontal de la valeur (défaut 0)
+spacing //  espace autour de la jauge défaut (1) peut être négatif essayez -15
+
+
+fontv // font value défaut 
+
 -------------------------------------------------------------------------
 Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …, #000000, …, rgb(255,0,0), …, rgba(255,0,0,0.5) pour des effets de transparence avec le dernier paramètre entre 0 et 1).
 -->
 
 <div class="JaugeHorizontal-#id# cmd tooltips cmd-widget #history# widget-JaugeHorizontal" title="" data-type="info" data-subtype="numeric"  data-template="JaugeHorizontal"  data-cmd_id="#id#" >
-
+<style>
+@font-face {
+    font-family: "Digital7";
+  	src: url("data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal/font/digital-7.ttf") format("truetype");
+}
+</style>
 <div id="JaugeHorizontal#id#"></div>
 
 
-<div class="cmdStats #hide_history#" style="position: relative; top:-45px ;">
+<div id="stat#id#" class="cmdStats #hide_history#" style="position: relative; top:-45px ;">
 <span title='Min' class='tooltips'>#minHistoryValue#</span>|<span title='Moyenne' class='tooltips'>#averageHistoryValue#</span>|<span title='Max' class='tooltips'>#maxHistoryValue#</span> <i class="#tendance#"></i>
 </div>
 
-<div class="value" style="position: relative; top:-45px ;">
+<div id="duree#id#" class="value" style="position: relative; top:-45px ;">
   <span class="timeCmd#uid# timeCmd label label-default value"></span>
 </div>
 
@@ -78,21 +93,25 @@ var Laiguille#id# = ('#Laiguille#' !='#'+'Laiguille#') ? "#Laiguille#":"70"; // 
 var Eaiguille#id# = ('#Eaiguille#' !='#'+'Eaiguille#') ? "#Eaiguille#":"4"; //  Epaisseur de aiguille
 var Raiguille#id# = ('#Raiguille#' !='#'+'Raiguille#') ? "#Raiguille#":"0"; //  Longueur arriere de aiguille
 
-var CTXT1#id#   = ('#CTXT1#'   !='#'+'CTXT1#') ?   "#CTXT1#"  :"green";  // couleur texte 1
-var CTXT2#id#   = ('#CTXT2#'   !='#'+'CTXT2#') ?   "#CTXT2#"  :"red";  // couleur texte 2
-var CTXT3#id#   = ('#CTXT3#'   !='#'+'CTXT3#') ?   "#CTXT3#"  :"white";  // couleur texte 3
+var CTXT1#id#   = ('#CTXT1#'   !='#'+'CTXT1#') ?   "#CTXT1#"  :"green";  // couleur texte 1 NOM
+var CTXT2#id#   = ('#CTXT2#'   !='#'+'CTXT2#') ?   "#CTXT2#"  :"red";  // couleur texte 2 VALEUR
+var CTXT3#id#   = ('#CTXT3#'   !='#'+'CTXT3#') ?   "#CTXT3#"  :"white";  // couleur texte 3 echelle
 var RTXT#id#    = ('#RTXT#'   !='#'+'RTXT#') ?   "#RTXT#"  :'auto';  // rotation texte valeurs
 
 
-var fsize#id#   = ('#fsize#'   !='#'+'fsize#') ?   "#fsize#"  :"12px"; // taille des caracteres
+
+var fsize1#id#   = ('#fsize1#'   !='#'+'fsize1#') ?   "#fsize1#"  :"12px"; // taille des caracteres CTXT1/NOM
+var fsize2#id#   = ('#fsize2#'   !='#'+'fsize2#') ?   "#fsize2#"  :"24px"; // taille des caracteres CTXT2/VALEUR
+
+var fsize#id#   = ('#fsize#'   !='#'+'fsize#') ?   "#fsize#"  :"12px"; // taille des caracteres CTXT3
 
 var centre#id#   = ('#centre#'   !='#'+'centre#') ?   "#centre#"  :"#FFF";  // blanc
 var Tcentre#id#   = ('#Tcentre#'   !='#'+'Tcentre#') ?   "#Tcentre#"  :"5";  // taille du centre
 
 var step#id#   = ('#step#'   !='#'+'step#') ?   "#step#"  :"2";  // espacement des valeurs
 
-var start#id#  = ('#start#'  !='#'+'start#') ?  "#start#" :"-150"; // début compteur
-var stop#id#   = ('#stop#'   !='#'+'stop#') ?   "#stop#"  :"150";      //fin compteur
+var start#id#  = ('#start#'  !='#'+'start#') ?  "#start#" :"-130"; // début compteur
+var stop#id#   = ('#stop#'   !='#'+'stop#') ?   "#stop#"  :"130";      //fin compteur
 
 var C1#id# = ('#C1#' !='#'+'C1#') ? "#C1#":"#080"; //VERT  COULEUR 1ER   PARTIE
 var C2#id# = ('#C2#' !='#'+'C2#') ? "#C2#":"#880"; //JAUNE COULEUR 2IEME PARTIE
@@ -120,6 +139,19 @@ var VmaxHist#id# = ('#maxHistoryValue#' !='#'+'maxHistoryValue#') ? "#maxHistory
 
 var image#id# = ('#image#' !='#'+'image#') ? "#image#":null;
 
+
+var spos#id# = ('#spos#' !='#'+'spos#') ? "#spos#":'-45px'; // STAT
+var dpos#id# = ('#dpos#' !='#'+'dpos#') ? "#dpos#":'-45px'; // DUREE
+
+var wpos#id# = ('#wpos#' !='#'+'wpos#') ? "#wpos#":'0px'; // Widget
+var npos#id# = ('#npos#' !='#'+'npos#') ? "#npos#":'15';    // Nom
+var vpos#id# = ('#vpos#' !='#'+'vpos#') ? "#vpos#":'-80';   // vertical Valeur
+var vposx#id# = ('#vposx#' !='#'+'vposx#') ? "#vposx#":'0';   //horizontal  Valeur
+
+var spacing#id# = ('#spacing#' !='#'+'spacing#') ? "#spacing#":'1';  // espace autour de la jauge
+
+var fontv#id# = ('#fontv#' !='#'+'fontv#') ? "#fontv#":'Digital7';   //font Valeur Digital7,arial
+
 VminHist#id#=parseFloat(VminHist#id#);
 VmoyHist#id#=parseFloat(VmoyHist#id#);
 VmaxHist#id#=parseFloat(VmaxHist#id#);
@@ -133,14 +165,21 @@ V2#id#=parseFloat(V2#id#);
 V3#id#=parseFloat(V3#id#);
 V4#id#=parseFloat(V4#id#);
 VX#id#=parseFloat(VX#id#);
+npos#id#=parseFloat(npos#id#);
+vpos#id#=parseFloat(vpos#id#);
+vposx#id#=parseFloat(vposx#id#);
+spacing#id#=parseFloat(spacing#id#);
+
 if(RTXT#id# != 'auto') { RTXT#id#=parseFloat(RTXT#id#); }
 CTXT3#id# = CTXT3#id# + " !important";
 
 $('#JaugeHorizontal#id#').css('width',size#id#);
 $('#JaugeHorizontal#id#').css('height',size#id#);
 $('#JaugeHorizontal#id#').css('position','relative');
-$('#JaugeHorizontal#id#').css('top','-15px');
-
+$('#JaugeHorizontal#id#').css('top',wpos#id#); // Position du Widget
+$('#stat#id#').css('top',spos#id#); // Position des stats
+$('#duree#id#').css('top',dpos#id#); // Position duree
+                              
 if ( VminHist#id# == 0 && VmoyHist#id# == 0 && VmaxHist#id# == 0 ) {
   Cmin#id# = Cmoy#id# = Cmax#id# = '#00000000';
 }
@@ -195,9 +234,12 @@ else { // limitation des taquets d'historique à 2% de la plage
       type: 'gauge',
       plotBackgroundColor: back#id#,
       plotBackgroundImage: image#id#,
-      plotBorderWidth:0,
+      plotBorderWidth: 0,
       plotBorderColor: back#id#,
-      plotShadow: false
+      plotShadow: false,
+      
+      spacingTop: spacing#id#, spacingLeft: spacing#id#, spacingRight: spacing#id#, spacingBottom: spacing#id#
+
     },
     title: { text: '', verticalAlign:  'bottom'
     },
@@ -269,14 +311,19 @@ else { // limitation des taquets d'historique à 2% de la plage
         { from: V1#id#, to: V2#id#, color: C2#id# }, // yellow couleur 2
         { from: V2#id#, to: V3#id#, color: C3#id# }, // yellow couleur 3
         { from: V3#id#, to: V4#id#, color: C4#id# }, // yellow couleur 4
-        { from: V4#id#, to: VX#id#, color: C5#id# }  // red couleur 5
+        { from: V4#id#, to: VX#id#, color: C5#id# },  // red couleur 5
+         
       ]
+      
     },
     series: [
       { name: 'Valeur',
         data: [
           { id: 'valeur',
-            y: 0
+            y: 0,
+            dial: {
+           			
+               }
           }
         ],
         enableMouseTracking: false
@@ -352,6 +399,47 @@ else { // limitation des taquets d'historique à 2% de la plage
   })
 
 
+
+  jeedom.cmd.update['#id#'] = function(_options){
+    var valeur = parseFloat(_options.display_value);
+    var valeur2 = _options.collectDate;
+    $('.cmd[data-cmd_id=#id#]').attr('title','Date de valeur : '+_options.valueDate+'<br/>Date de collecte : '+_options.collectDate);
+    chart#id#.yAxis[0].setTitle(
+      { text: nom#id# , style: { color: CTXT1#id#, fontWeight: 'bold', fontSize: fsize1#id# } , y: npos#id# ,x:0 }
+    );
+
+    chart#id#.setTitle(
+      { text: valeur + ' #unite#', style: { fontWeight: 'bold', fontFamily: fontv#id#, color: CTXT2#id#, fontSize: fsize2#id# }, y:vpos#id#,x:vposx#id#}
+    );
+
+      // limitation aiguille contribution JPTY
+    var plage = (VX#id# - V0#id#) *.02;
+    if ( valeur < V0#id# ) valeur = V0#id# - plage;
+    else if ( valeur > VX#id# ) valeur = VX#id# + plage;
+
+    chart#id#.series[0].data[0].update(valeur);
+
+    if( dur#id# == "oui"){
+      jeedom.cmd.displayDuration(_options.valueDate, $('.cmd[data-cmd_id=#id#] .timeCmd#uid#'));
+    }
+// A FAIRE
+      // Sélection du mode clair ou sombre
+    if ($('body')[0].hasAttribute('data-theme')) {
+      if ($('body').attr('data-theme').endsWith('Light')) {
+        srcMode = "light";
+      } else {
+        srcMode = "dark";
+      }
+    }
+  //chart#id#.chart({plotBackgroundColor: 'red !important'});
+//  chart#id#.chart.setOptions({
+ //   plotBackgroundColor: 'red'
+ // });
+  //chart#id#.plotOptions: {plotBackgroundColor: 'red'};
+  }
+jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#'});
+</script>
+</div>
 
   jeedom.cmd.update['#id#'] = function(_options){
     var valeur = parseFloat(_options.display_value);
