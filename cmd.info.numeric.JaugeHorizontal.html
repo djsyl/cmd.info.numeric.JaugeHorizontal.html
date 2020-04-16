@@ -1,6 +1,8 @@
 <!--
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-// Olive 2020-04-16 19:00 MAJ
+
+// Olive 2020-04-16 19:42
+
 JPTY PR 2020-02-27 22:00
 // JPTY  2020-02-29
 // OPTIONS : Voir le début de la section script
@@ -440,45 +442,3 @@ else { // limitation des taquets d'historique à 2% de la plage
 jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#'});
 </script>
 </div>
-
-  jeedom.cmd.update['#id#'] = function(_options){
-    var valeur = parseFloat(_options.display_value);
-    var valeur2 = _options.collectDate;
-    $('.cmd[data-cmd_id=#id#]').attr('title','Date de valeur : '+_options.valueDate+'<br/>Date de collecte : '+_options.collectDate);
-    chart#id#.yAxis[0].setTitle(
-      { text: nom#id# , style: { color: CTXT1#id#, fontWeight: 'bold', fontSize: fsize#id# } }
-    );
-
-    chart#id#.setTitle(
-      { text: valeur + ' #unite#', style: { color: CTXT2#id#, fontSize: fsize#id# }, y:-60}
-    );
-
-      // limitation aiguille contribution JPTY
-    var plage = (VX#id# - V0#id#) *.02;
-    if ( valeur < V0#id# ) valeur = V0#id# - plage;
-    else if ( valeur > VX#id# ) valeur = VX#id# + plage;
-
-    chart#id#.series[0].data[0].update(valeur);
-
-    if( dur#id# == "oui"){
-      jeedom.cmd.displayDuration(_options.valueDate, $('.cmd[data-cmd_id=#id#] .timeCmd#uid#'));
-    }
-// A FAIRE
-      // Sélection du mode clair ou sombre
-    if ($('body')[0].hasAttribute('data-theme')) {
-      if ($('body').attr('data-theme').endsWith('Light')) {
-        srcMode = "light";
-      } else {
-        srcMode = "dark";
-      }
-    }
-  //chart#id#.chart({plotBackgroundColor: 'red !important'});
-//  chart#id#.chart.setOptions({
- //   plotBackgroundColor: 'red'
- // });
-  //chart#id#.plotOptions: {plotBackgroundColor: 'red'};
-  }
-jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#'});
-</script>
-</div>
-
