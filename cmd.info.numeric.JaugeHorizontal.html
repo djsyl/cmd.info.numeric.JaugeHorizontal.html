@@ -1,4 +1,68 @@
 <div class="JaugeHorizontal-#id# cmd tooltips cmd-widget #history# widget-JaugeHorizontal" title="" data-type="info" data-subtype="numeric"  data-template="JaugeHorizontal"  data-cmd_id="#id#" >
+
+<!--
+// file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
+
+// Olive 2020-04-21 12H00
+
+JPTY PR 2020-02-27 22:00
+// JPTY  2020-02-29
+// OPTIONS : Voir le début de la section script
+// de préférence renseignez  les options de la commande min max et unite
+----- Paramètres optionnels widget
+size //  taille du cadran (déaut 250px)
+nom  // remplace le nom de la commande par celui de votre choix
+back  // Couleur de fond du widget (défaut #262626 )
+fond  // Couleur de fond du cadran (défaut #@@@ )
+aiguille  // Couleur aiguille (défaut rouge)
+Laiguille  // Longueur de aiguille (défaut 70)
+Eaiguille  // Epaisseur de aiguille (défaut 4)
+Raiguille  // longueur arriere de aiguille (défaut 0)
+CTXT1  // Couleur du nom de la commande (défaut green)
+CTXT2  // Couleur de la valeur et de l’unité (défaut red)
+CTXT3  // Couleur des valeurs et (défaut white)
+RTXT  //orientation des valeurs des textes (défaut 'auto' 0 horizontal a 360  ...)
+fsize   // taille des caractères (défaut 12px)
+fsize1  // taille des caracteres CTXT1/NOM (défaut 12px)
+fsize2  // taille des caracteres CTXT2/VALEUR (défaut 24px)
+centre  // Couleur de l’axe de l’aiguille (défaut blanc)
+Tcentre  // Taille de l’axe de l’aiguille (défaut 5)
+step  // Espacement entre deux valeurs (défaut 2)
+start  // début cadran (défaut -150 degrés par rapport au nord)
+stop  // fin cadran   (défaut 150 degrés par rapport au nord)
+C1  // Couleur 1ère échelle des valeurs (défaut vert)
+C2  // Couleur 2ème échelle des valeurs (défaut jaune)
+C3  // Couleur 3ème échelle des valeurs (défaut rouge)
+C4  // Couleur 4ème échelle des valeurs (défaut rouge)
+C5  // Couleur 5ème echelle des valeurs (défaut rouge)
+Cmin // couleur valeur mini    historique (défaut Bleu) rgba(0,0,0,0) pour cacher
+Cmoy // couleur valeur moyenne historique (défaut vert)
+Cmax // couleur valeur maxi    historique (défaut Rouge)
+V0  // Valeur de separation entre la partie DEBUT
+V1  // Valeur de separation entre la partie 1 et 2
+V2  // Valeur de separation entre la partie 2 et 3
+V3  // Valeur de separation entre la partie 3 et 4
+V4  // Valeur de separation entre la partie 4 et 5
+VX  // Valeur de separation entre la partie FIN
+dur  // affichage de la durée depuis la dernière valeur
+minorTickcolor // couleur des ticks mineur
+tickColor      // couleur des ticks
+image // image de fond (défaut pas d'image)
+
+spos  // Position des stats (défaut -45px)
+dpos  // Position duree (défaut -45px)
+wpos  // position du widget (défaut -15px)
+npos  // position du nom (défaut 15)
+vpos  // position de la valeur (défaut -60)
+vposx // position horizontal de la valeur (défaut 0)
+spacing //  espace autour de la jauge défaut (1) peut être négatif essayez -15
+
+
+fontv // font value défaut 
+
+-------------------------------------------------------------------------
+Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …, #000000, …, rgb(255,0,0), …, rgba(255,0,0,0.5) pour des effets de transparence avec le dernier paramètre entre 0 et 1).
+-->
 <style>
 @font-face {
     font-family: "Digital7";
@@ -153,23 +217,7 @@ else { // limitation des taquets d'historique à 2% de la plage
     VmaxHist#id# = VX#id# + plage;
   }
 }
-
- // Sélection du mode clair ou sombre
-/*
-  if ($('body')[0].hasAttribute('data-theme')) {
-    if ($('body').attr('data-theme').endsWith('Light')) {
-      srcMode = "light";
-      fond#id# = 'red';
-    } else {
-      srcMode = "dark";
-      fond#id# = 'yellow';
-    }
-  }
-*/
-
-// plotBackgroundImage: 'data/img/rm.png',
-
-
+                    
   var chart#id#;
   chart#id# = new Highcharts.Chart({
     chart: {
@@ -341,8 +389,6 @@ else { // limitation des taquets d'historique à 2% de la plage
     }
   })
 
-
-
   jeedom.cmd.update['#id#'] = function(_options){
     var valeur = parseFloat(_options.display_value);
     var valeur2 = _options.collectDate;
@@ -365,81 +411,8 @@ else { // limitation des taquets d'historique à 2% de la plage
     if( dur#id# == "oui"){
       jeedom.cmd.displayDuration(_options.valueDate, $('.cmd[data-cmd_id=#id#] .timeCmd#uid#'));
     }
-// A FAIRE
-      // Sélection du mode clair ou sombre
-    if ($('body')[0].hasAttribute('data-theme')) {
-      if ($('body').attr('data-theme').endsWith('Light')) {
-        srcMode = "light";
-      } else {
-        srcMode = "dark";
-      }
-    }
-  }
 jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#'});
 </script>
 </div>
-<!--
-// file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-
-// Olive 2020-04-17 19H00
-
-JPTY PR 2020-02-27 22:00
-// JPTY  2020-02-29
-// OPTIONS : Voir le début de la section script
-// de préférence renseignez  les options de la commande min max et unite
------ Paramètres optionnels widget
-size //  taille du cadran (déaut 250px)
-nom  // remplace le nom de la commande par celui de votre choix
-back  // Couleur de fond du widget (défaut #262626 )
-fond  // Couleur de fond du cadran (défaut #@@@ )
-aiguille  // Couleur aiguille (défaut rouge)
-Laiguille  // Longueur de aiguille (défaut 70)
-Eaiguille  // Epaisseur de aiguille (défaut 4)
-Raiguille  // longueur arriere de aiguille (défaut 0)
-CTXT1  // Couleur du nom de la commande (défaut green)
-CTXT2  // Couleur de la valeur et de l’unité (défaut red)
-CTXT3  // Couleur des valeurs et (défaut white)
-RTXT  //orientation des valeurs des textes (défaut 'auto' 0 horizontal a 360  ...)
-fsize   // taille des caractères (défaut 12px)
-fsize1  // taille des caracteres CTXT1/NOM (défaut 12px)
-fsize2  // taille des caracteres CTXT2/VALEUR (défaut 24px)
-centre  // Couleur de l’axe de l’aiguille (défaut blanc)
-Tcentre  // Taille de l’axe de l’aiguille (défaut 5)
-step  // Espacement entre deux valeurs (défaut 2)
-start  // début cadran (défaut -150 degrés par rapport au nord)
-stop  // fin cadran   (défaut 150 degrés par rapport au nord)
-C1  // Couleur 1ère échelle des valeurs (défaut vert)
-C2  // Couleur 2ème échelle des valeurs (défaut jaune)
-C3  // Couleur 3ème échelle des valeurs (défaut rouge)
-C4  // Couleur 4ème échelle des valeurs (défaut rouge)
-C5  // Couleur 5ème echelle des valeurs (défaut rouge)
-Cmin // couleur valeur mini    historique (défaut Bleu) rgba(0,0,0,0) pour cacher
-Cmoy // couleur valeur moyenne historique (défaut vert)
-Cmax // couleur valeur maxi    historique (défaut Rouge)
-V0  // Valeur de separation entre la partie DEBUT
-V1  // Valeur de separation entre la partie 1 et 2
-V2  // Valeur de separation entre la partie 2 et 3
-V3  // Valeur de separation entre la partie 3 et 4
-V4  // Valeur de separation entre la partie 4 et 5
-VX  // Valeur de separation entre la partie FIN
-dur  // affichage de la durée depuis la dernière valeur
-minorTickcolor // couleur des ticks mineur
-tickColor      // couleur des ticks
-image // image de fond (défaut pas d'image)
-
-spos  // Position des stats (défaut -45px)
-dpos  // Position duree (défaut -45px)
-wpos  // position du widget (défaut -15px)
-npos  // position du nom (défaut 15)
-vpos  // position de la valeur (défaut -60)
-vposx // position horizontal de la valeur (défaut 0)
-spacing //  espace autour de la jauge défaut (1) peut être négatif essayez -15
-
-
-fontv // font value défaut 
-
--------------------------------------------------------------------------
-Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …, #000000, …, rgb(255,0,0), …, rgba(255,0,0,0.5) pour des effets de transparence avec le dernier paramètre entre 0 et 1).
--->
 
 
