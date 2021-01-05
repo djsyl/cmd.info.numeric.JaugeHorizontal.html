@@ -3,7 +3,7 @@
 <!--
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
 
-// Olive 2021-01-05 04H00 corrections pour V4.1 deformation images de fond
+// Olive 2021-01-05 10H00 ajout du parametre deformation pour les images en V4.1
 
 JPTY PR 2020-02-27 22:00
 // JPTY  2020-02-29
@@ -56,6 +56,7 @@ npos  // position du nom (défaut 15)
 vpos  // position de la valeur (défaut -60)
 vposx // position horizontal de la valeur (défaut 0)
 spacing //  espace autour de la jauge défaut (1) peut être négatif essayez -15
+deformation // coeficient de deformation de l'image  1 pour une V4.0 , 1.103 pour une v4.1
 
 
 fontv // font value défaut 
@@ -139,7 +140,7 @@ var VmoyHist#id# = ('#averageHistoryValue#' !='#'+'averageHistoryValue#') ? "#av
 var VmaxHist#id# = ('#maxHistoryValue#' !='#'+'maxHistoryValue#') ? "#maxHistoryValue#":"0";
 
 var image#id# = ('#image#' !='#'+'image#') ? "#image#":null;
-
+var deformation#id# = ('#deformation#' !='#'+'deformation#') ? "#deformation#":"1.103";
 
 var spos#id# = ('#spos#' !='#'+'spos#') ? "#spos#":'-45px'; // STAT
 var dpos#id# = ('#dpos#' !='#'+'dpos#') ? "#dpos#":'-45px'; // DUREE
@@ -171,8 +172,9 @@ spos#id#=parseFloat(spos#id#);
 vpos#id#=parseFloat(vpos#id#);
 vposx#id#=parseFloat(vposx#id#);
 spacing#id#=parseFloat(spacing#id#);
-size2#id#=parseFloat(size#id#) * 1.104;
+size2#id#=parseFloat(size#id#) * parseFloat(deformation#id#);
 Raiguille#id#=parseFloat(Raiguille#id#);
+
 
 if(RTXT#id# != 'auto') { RTXT#id#=parseFloat(RTXT#id#); }
 CTXT3#id# = CTXT3#id# + " !important";
