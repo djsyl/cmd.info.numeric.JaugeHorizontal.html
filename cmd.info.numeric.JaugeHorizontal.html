@@ -1,8 +1,9 @@
 <div class="JaugeHorizontal-#id# cmd tooltips cmd-widget #history# widget-JaugeHorizontal" title="" data-type="info" data-subtype="numeric"  data-template="JaugeHorizontal"  data-cmd_id="#id#" >
+
 <!--
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
 
-// Olive 2020-04-22 13H46
+// Olive 2021-01-05 10H00 ajout du parametre deformation pour les images en V4.1
 
 JPTY PR 2020-02-27 22:00
 // JPTY  2020-02-29
@@ -55,14 +56,15 @@ npos  // position du nom (défaut 15)
 vpos  // position de la valeur (défaut -60)
 vposx // position horizontal de la valeur (défaut 0)
 spacing //  espace autour de la jauge défaut (1) peut être négatif essayez -15
+deformation // coeficient de deformation de l'image  1 pour une V4.0 , 1.103 pour une v4.1
+Ctour // couleur de exterieur de la jauge
 
 
 fontv // font value défaut 
 
 -------------------------------------------------------------------------
 Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …, #000000, …, rgb(255,0,0), …, rgba(255,0,0,0.5) pour des effets de transparence avec le dernier paramètre entre 0 et 1).
--->
-
+-->  
 <style>
 @font-face {
     font-family: "Digital7";
@@ -85,12 +87,13 @@ Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …,
 #JaugeHorizontal#id# .highcharts-minor-tick { stroke: #minorTickcolor#}
 #JaugeHorizontal#id# .highcharts-tick { stroke: #tickColor#}
 #JaugeHorizontal#id# .highcharts-grid-line { stroke: none !important;}
+#JaugeHorizontal#id# .highcharts-container .highcharts-axis-line {stroke: #Ctour#;}
 </style>  
 <script>
 var nom#id# = ('#nom#' !='#'+'nom#') ? "#nom#":"#name#";  // remplace le nom de la commande par celui de votre choix
 var size#id# = ('#size#' !='#'+'size#') ? "#size#":"250px";  // taille du cadran
 var back#id# = ('#back#' !='#'+'back#') ? "#back#":"transparent";  // couleur fond exterieur au cadran
-var fond#id# = ('#fond#' !='#'+'fond#') ? "#fond#":"#000";  // couleur fond du cadran
+var fond#id# = ('#fond#' !='#'+'fond#') ? "#fond#":"rgba(0,0,0,0)";  // couleur fond du cadran
 var aiguille#id# = ('#aiguille#' !='#'+'aiguille#') ? "#aiguille#":"#F00";  // couleur aiguille défaut rouge
 var Laiguille#id# = ('#Laiguille#' !='#'+'Laiguille#') ? "#Laiguille#":"70"; //  Longueur de aiguille
 var Eaiguille#id# = ('#Eaiguille#' !='#'+'Eaiguille#') ? "#Eaiguille#":"4"; //  Epaisseur de aiguille
@@ -114,11 +117,11 @@ var step#id#   = ('#step#'   !='#'+'step#') ?   "#step#"  :"2";  // espacement d
 var start#id#  = ('#start#'  !='#'+'start#') ?  "#start#" :"-130"; // début compteur
 var stop#id#   = ('#stop#'   !='#'+'stop#') ?   "#stop#"  :"130";      //fin compteur
 
-var C1#id# = ('#C1#' !='#'+'C1#') ? "#C1#":"#080"; //VERT  COULEUR 1ER   PARTIE
-var C2#id# = ('#C2#' !='#'+'C2#') ? "#C2#":"#880"; //JAUNE COULEUR 2IEME PARTIE
-var C3#id# = ('#C3#' !='#'+'C3#') ? "#C3#":"#800"; //ROUGE COULEUR 3IEME PARTIE
-var C4#id# = ('#C4#' !='#'+'C4#') ? "#C4#":"#800"; //ROUGE COULEUR 4IEME PARTIE
-var C5#id# = ('#C5#' !='#'+'C5#') ? "#C5#":"#800"; //ROUGE COULEUR 5IEME PARTIE
+var C1#id# = ('#C1#' !='#'+'C1#') ? "#C1#":"rgba(0,0,0,0)"; //VERT  COULEUR 1ER   PARTIE
+var C2#id# = ('#C2#' !='#'+'C2#') ? "#C2#":"rgba(0,0,0,0)"; //JAUNE COULEUR 2IEME PARTIE
+var C3#id# = ('#C3#' !='#'+'C3#') ? "#C3#":"rgba(0,0,0,0)"; //ROUGE COULEUR 3IEME PARTIE
+var C4#id# = ('#C4#' !='#'+'C4#') ? "#C4#":"rgba(0,0,0,0)"; //ROUGE COULEUR 4IEME PARTIE
+var C5#id# = ('#C5#' !='#'+'C5#') ? "#C5#":"rgba(0,0,0,0)"; //ROUGE COULEUR 5IEME PARTIE
 
 var Cmin#id# = ('#Cmin#' !='#'+'Cmin#') ? "#Cmin#":"#00F"; //BLEU STAT MIN
 var Cmoy#id# = ('#Cmoy#' !='#'+'Cmoy#') ? "#Cmoy#":"#0F0"; //VERT STAT MOYENNE
@@ -139,7 +142,7 @@ var VmoyHist#id# = ('#averageHistoryValue#' !='#'+'averageHistoryValue#') ? "#av
 var VmaxHist#id# = ('#maxHistoryValue#' !='#'+'maxHistoryValue#') ? "#maxHistoryValue#":"0";
 
 var image#id# = ('#image#' !='#'+'image#') ? "#image#":null;
-
+var deformation#id# = ('#deformation#' !='#'+'deformation#') ? "#deformation#":"1.103";
 
 var spos#id# = ('#spos#' !='#'+'spos#') ? "#spos#":'-45px'; // STAT
 var dpos#id# = ('#dpos#' !='#'+'dpos#') ? "#dpos#":'-45px'; // DUREE
@@ -171,16 +174,20 @@ spos#id#=parseFloat(spos#id#);
 vpos#id#=parseFloat(vpos#id#);
 vposx#id#=parseFloat(vposx#id#);
 spacing#id#=parseFloat(spacing#id#);
+size2#id#=parseFloat(size#id#) * parseFloat(deformation#id#);
+Raiguille#id#=parseFloat(Raiguille#id#);
+
 
 if(RTXT#id# != 'auto') { RTXT#id#=parseFloat(RTXT#id#); }
 CTXT3#id# = CTXT3#id# + " !important";
 
 $('#JaugeHorizontal#id#').css('width',size#id#);
-$('#JaugeHorizontal#id#').css('height',size#id#);
+$('#JaugeHorizontal#id#').css('height',size2#id#);
 $('#JaugeHorizontal#id#').css('position','relative');
 $('#JaugeHorizontal#id#').css('top',wpos#id#); // Position du Widget
 $('#stat#id#').css('top',spos#id#); // Position des stats
 $('#duree#id#').css('top',dpos#id#); // Position duree
+                 
                               
 if ( VminHist#id# == 0 && VmoyHist#id# == 0 && VmaxHist#id# == 0 ) {
   Cmin#id# = Cmoy#id# = Cmax#id# = '#00000000';
@@ -391,9 +398,9 @@ else { // limitation des taquets d'historique à 2% de la plage
     chart#id#.yAxis[0].setTitle(
       { text: nom#id# , style: { color: CTXT1#id#, fontWeight: 'bold', fontSize: fsize1#id# } , y: npos#id# ,x:0 }
     );
-
+       
     chart#id#.setTitle(
-      { text: valeur + ' #unite#', style: { fontWeight: 'bold', fontFamily: fontv#id#, color: CTXT2#id#, fontSize: fsize2#id# }, y:vpos#id#,x:vposx#id#}
+      { text: (valeur) + ' #unite#', style: { fontWeight: 'bold', fontFamily: fontv#id#, color: CTXT2#id#, fontSize: fsize2#id# }, y:vpos#id#,x:vposx#id#}
     );
 
       // limitation aiguille contribution JPTY
