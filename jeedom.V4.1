@@ -2,9 +2,7 @@
 
 <!--
 // file : /data/customTemplates/dashboard/cmd.info.numeric.JaugeHorizontal.html
-
-// Olive 2021-01-05 10H00 ajout du parametre deformation pour les images en V4.1
-
+// Olive 2021-07-29 10H00 ajout du parametre REV
 JPTY PR 2020-02-27 22:00
 // JPTY  2020-02-29
 // OPTIONS : Voir le début de la section script
@@ -48,7 +46,6 @@ dur  // affichage de la durée depuis la dernière valeur
 minorTickcolor // couleur des ticks mineur
 tickColor      // couleur des ticks
 image // image de fond (défaut pas d'image)
-
 spos  // Position des stats (défaut -45px)
 dpos  // Position duree (défaut -45px)
 wpos  // position du widget (défaut -15px)
@@ -57,10 +54,9 @@ vpos  // position de la valeur (défaut -60)
 vposx // position horizontal de la valeur (défaut 0)
 spacing //  espace autour de la jauge défaut (1) peut être négatif essayez -15
 deformation // coeficient de deformation de l'image  1 pour une V4.0 , 1.103 pour une v4.1
-
-
+Ctour // couleur de exterieur de la jauge
 fontv // font value défaut 
-
+REV // 0 normale , 1 inverse le dens cw ou ccw
 -------------------------------------------------------------------------
 Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …, #000000, …, rgb(255,0,0), …, rgba(255,0,0,0.5) pour des effets de transparence avec le dernier paramètre entre 0 et 1).
 -->  
@@ -86,6 +82,7 @@ Les expression de couleurs respectent le format HTML (red, lime, …, #F00, …,
 #JaugeHorizontal#id# .highcharts-minor-tick { stroke: #minorTickcolor#}
 #JaugeHorizontal#id# .highcharts-tick { stroke: #tickColor#}
 #JaugeHorizontal#id# .highcharts-grid-line { stroke: none !important;}
+#JaugeHorizontal#id# .highcharts-container .highcharts-axis-line {stroke: #Ctour#;}
 </style>  
 <script>
 var nom#id# = ('#nom#' !='#'+'nom#') ? "#nom#":"#name#";  // remplace le nom de la commande par celui de votre choix
@@ -150,6 +147,8 @@ var npos#id# = ('#npos#' !='#'+'npos#') ? "#npos#":'15';    // Nom
 var vpos#id# = ('#vpos#' !='#'+'vpos#') ? "#vpos#":'-80';   // vertical Valeur
 var vposx#id# = ('#vposx#' !='#'+'vposx#') ? "#vposx#":'0';   //horizontal  Valeur
 
+var REV#id# = ('#REV#' !='#'+'REV#') ? "#REV#":'0';   //inversion de sens
+
 var spacing#id# = ('#spacing#' !='#'+'spacing#') ? "#spacing#":'1';  // espace autour de la jauge
 
 var fontv#id# = ('#fontv#' !='#'+'fontv#') ? "#fontv#":'Digital7';   //font Valeur Digital7,arial
@@ -160,7 +159,7 @@ VmaxHist#id#=parseFloat(VmaxHist#id#);
 var VminRealHist#id#=VminHist#id#;
 var VmoyRealHist#id#=VmoyHist#id#;
 var VmaxRealHist#id#=VmaxHist#id#;
-
+REV#id#=parseFloat(REV#id#);
 V0#id#=parseFloat(V0#id#);
 V1#id#=parseFloat(V1#id#);
 V2#id#=parseFloat(V2#id#);
@@ -268,11 +267,12 @@ else { // limitation des taquets d'historique à 2% de la plage
       }
     },
     yAxis: {
+      reversed: REV#id#,
       min: V0#id#,
       max: VX#id#,
       minorTickInterval: 'auto',
       minorTickWidth: 1,
-      minorTickLength: 10,
+      minorTickLength: 5,
       minorTickPosition: 'inside',
       minorTickColor: '', // Ne fonctionne pas couleur du core
       tickPixelInterval: 50,
@@ -414,4 +414,5 @@ else { // limitation des taquets d'historique à 2% de la plage
    }
 jeedom.cmd.update['#id#']({display_value:'#state#',valueDate:'#valueDate#',collectDate:'#collectDate#'});
 </script>
+</div>
 </div>
